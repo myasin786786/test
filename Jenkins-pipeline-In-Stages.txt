@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Stop and Remove Old Containers') {
+            steps {
+        script 
+        {
+    sh """ssh -tt root@192.168.126.28 << EOF 
+    docker-d/test/RemoveRunningContainers.sh
+    exit
+    EOF"""
+}           
+                echo 'Old Containers stoped and removed successfully'
+            }
+                  stage('Build Docker images') {
+            steps {
+        script 
+        {
+    sh """ssh -tt root@192.168.126.28 << EOF 
+    docker-d/test/BuildContainer.sh
+    exit
+    EOF"""
+}           
+                echo 'Docker image build successfully'
+            }
+            
+            
+                 stage('Docker image Deploy') {
+            steps {
+        script 
+        {
+    sh """ssh -tt root@192.168.126.28 << EOF 
+    docker-d/test/DeployContainer.sh
+    exit
+    EOF"""
+}           
+                echo 'Docker image deployed successfully'
+            } 
+            
+        }
+    }
+ }
+}
+}
