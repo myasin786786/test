@@ -6,7 +6,7 @@ pipeline {
             steps {
         script 
         {
-    sh """ssh -tt root@192.168.126.28 << EOF 
+    sh """ssh -tt root@192.168.10.11 << EOF 
     docker-d/test/Dockerfile-execution.sh
     exit
     EOF"""
